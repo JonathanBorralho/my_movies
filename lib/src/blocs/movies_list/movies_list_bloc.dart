@@ -15,9 +15,7 @@ class MoviesListBloc extends Bloc<MoviesListEvent, MoviesListState> {
   MoviesListState get initialState => Initial();
 
   @override
-  Stream<MoviesListState> mapEventToState(
-    MoviesListEvent event,
-  ) async* {
+  Stream<MoviesListState> mapEventToState(MoviesListEvent event) async* {
     if (event is Fetch) {
       yield Loading();
 

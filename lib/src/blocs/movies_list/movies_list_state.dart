@@ -7,9 +7,19 @@ abstract class MoviesListState extends Equatable {
   MoviesListState([List props = const []]) : super(props);
 }
 
-class Initial extends MoviesListState {}
+class Initial extends MoviesListState {
+  @override
+  String toString() {
+    return 'Initial';
+  }
+}
 
-class Loading extends MoviesListState {}
+class Loading extends MoviesListState {
+  @override
+  String toString() {
+    return 'Loading';
+  }
+}
 
 class Loaded extends MoviesListState {
   final List<Movie> movies;
@@ -18,7 +28,7 @@ class Loaded extends MoviesListState {
 
   @override
   String toString() {
-    return '[Movies Loaded] { size: ${movies.length} }';
+    return 'Loaded { size: ${movies.length} }';
   }
 }
 
@@ -29,6 +39,6 @@ class Failure extends MoviesListState {
 
   @override
   String toString() {
-    return '[Failure] { message: $message}';
+    return 'Failure { message: $message}';
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_movies/src/blocs/movies_list/bloc.dart';
 import 'package:my_movies/src/models/movie_model.dart';
 import 'package:my_movies/src/repositories/movie_repository.dart';
 
@@ -11,16 +12,26 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Melhores Filmes'),
       ),
-      body: FutureBuilder<List<Movie>>(
-        future: repo.findAll(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return _buildList(snapshot.data);
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+      body: BlocProvider<MoviesListBloc>(
+        builder: (context) =>
+            MoviesListBloc(movieRepository: repo)..dispatch(Fetch()),
+        child: BlocBuilder<MoviesListBloc, MoviesListState>(
+          builder: (context, state) {
+            if (state is Loaded) {
+              return _buildList(state.movies);
+            }
+
+            if (state is Failure) {
+              return Center(
+                child: Text(state.message),
+              );
+            }
+
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
       ),
     );
   }
@@ -28,12 +39,13 @@ class HomePage extends StatelessWidget {
   Widget _buildList(List<Movie> movies) {
     return GridView.builder(
       itemCount: movies.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemBuilder: (BuildContext context, int index) {
         return Padding(
           padding: const EdgeInsets.all(4.0),
           child: Image.network(
-            'https://image.tmdb.org/t/p/w185${movies[index].posterPath}',
+            'https://image.tmdb.org/t/p/w500${movies[index].posterPath}',
             fit: BoxFit.cover,
           ),
         );

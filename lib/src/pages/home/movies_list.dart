@@ -35,7 +35,7 @@ class MoviesList extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(4.0),
           child: Image.network(
-            'https://image.tmdb.org/t/p/w500${movies[index].posterPath}',
+            'https://image.tmdb.org/t/p/w154${movies[index].posterPath}',
             fit: BoxFit.cover,
           ),
         );

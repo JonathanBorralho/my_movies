@@ -14,4 +14,12 @@ class MovieRepository {
     MovieResponsePage page = MovieResponsePage.fromJson(body);
     return page.movies;
   }
+
+  Future<List<Movie>> search(String query) async {
+    final url = 'https://api.themoviedb.org/3/search/movie?api_key=$_apiKey&query=$query&language=pt-Br';
+    http.Response response = await http.get(url);
+    Map<String, dynamic> body = convert.jsonDecode(response.body);
+    MovieResponsePage page = MovieResponsePage.fromJson(body);
+    return page.movies;
+  }
 }

@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'movie_model.g.dart';
 
 @JsonSerializable()
-class Movie {
+class Movie extends Equatable {
   final int id;
 
   @JsonKey(name: 'vote_count')
@@ -28,7 +29,7 @@ class Movie {
   final String originalTitle;
 
   @JsonKey(name: 'genre_ids')
-  List<int> genreIds = [];
+  final List<int> genreIds = [];
 
   @JsonKey(name: 'backdrop_path')
   final String backdropPath;
@@ -54,8 +55,23 @@ class Movie {
     this.adult,
     this.overview,
     this.releaseDate,
-    List<int> genreIds,
-  }) : genreIds = genreIds ?? <int>[];
+    List<int> genreIds
+  }) : super([
+          id,
+          voteCount,
+          video,
+          voteAverage,
+          title,
+          popularity,
+          posterPath,
+          originalLanguage,
+          originalTitle,
+          backdropPath,
+          adult,
+          overview,
+          releaseDate,
+          genreIds,
+        ]);
 
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
 

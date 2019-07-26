@@ -7,45 +7,30 @@ abstract class MovieSearchState extends Equatable {
   MovieSearchState([List props = const []]) : super(props);
 }
 
-class Initial extends MovieSearchState {}
-
-class MovieSearchLoading extends MovieSearchState {
+class SearchStateEmpty extends MovieSearchState {
   @override
-  String toString() {
-    return 'MovieSearchLoading';
-  }
+  String toString() => 'SearchStateEmpty';
 }
 
-class MovieSearchLoaded extends MovieSearchState {
+class SearchStateLoading extends MovieSearchState {
+  @override
+  String toString() => 'SearchStateLoading';
+}
+
+class SearchStateSuccess extends MovieSearchState {
   final List<Movie> movies;
 
-  MovieSearchLoaded({this.movies}) : super([movies]);
+  SearchStateSuccess({this.movies}) : super([movies]);
 
   @override
-  String toString() {
-    return 'MovieSearchLoaded { size: ${movies.length} }';
-  }
+  String toString() => 'SearchStateSuccess { size: ${movies.length} }';
 }
 
-class NoResults extends MovieSearchState {
+class SearchStateError extends MovieSearchState {
   final String message;
 
-  NoResults({this.message}) : super([message]);
+  SearchStateError({this.message}) : super([message]);
 
   @override
-  String toString() {
-    return 'NoResults { message: $message }';
-  }
+  String toString() => 'SearchStateError { message: $message}';
 }
-
-class MovieSearchFailure extends MovieSearchState {
-  final String message;
-
-  MovieSearchFailure({this.message}) : super([message]);
-
-  @override
-  String toString() {
-    return 'MovieSearchFailure { message: $message}';
-  }
-}
-

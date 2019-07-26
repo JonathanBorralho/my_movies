@@ -38,14 +38,18 @@ class MovieSearchDelegate extends SearchDelegate {
     return BlocBuilder<MovieSearchBloc, MovieSearchState>(
       bloc: searchBloc,
       builder: (context, state) {
-        if (state is NoResults) {
+        if (state is SearchStateEmpty) {
+          return Container();
+        }
+
+        if (state is SearchStateSuccess) {
+          return _buildList(state.movies);
+        }
+
+        if (state is SearchStateError) {
           return Center(
             child: Text(state.message),
           );
-        }
-
-        if (state is MovieSearchLoaded) {
-          return _buildList(state.movies);
         }
 
         return Center(
@@ -66,20 +70,22 @@ class MovieSearchDelegate extends SearchDelegate {
   }
 
   Widget _buildList(List<Movie> movies) {
-    return GridView.builder(
-      itemCount: movies.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      itemBuilder: (BuildContext context, int index) {
-        return Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Image.network(
-            'https://image.tmdb.org/t/p/w154${movies[index].posterPath}',
-            fit: BoxFit.cover,
-          ),
-        );
-      },
-    );
+    return movies.isNotEmpty
+        ? GridView.builder(
+            itemCount: movies.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Image.network(
+                  'https://image.tmdb.org/t/p/w154${movies[index].posterPath}',
+                  fit: BoxFit.cover,
+                ),
+              );
+            },
+          )
+        : Center(child: Text('Sem resultados...'));
   }
 }

@@ -61,7 +61,31 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Container();
+    if (query.isNotEmpty) {
+      searchBloc.dispatch(SearchSuggestions(query: query));
+    }
+    return BlocBuilder<MovieSearchBloc, MovieSearchState>(
+      bloc: searchBloc,
+      builder: (context, state) {
+        if (state is SearchStateEmpty) {
+          return Container();
+        }
+
+        if (state is SearchStateSuccess) {
+          return _buildSuggestions(state.movies);
+        }
+
+        if (state is SearchStateError) {
+          return Center(
+            child: Text(state.message),
+          );
+        }
+
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 
   @override
@@ -87,5 +111,16 @@ class MovieSearchDelegate extends SearchDelegate {
             },
           )
         : Center(child: Text('Sem resultados...'));
+  }
+
+  Widget _buildSuggestions(List<Movie> movies) {
+    return ListView.builder(
+      itemCount: movies.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(movies[index].title),
+        );
+      },
+    );
   }
 }

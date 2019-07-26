@@ -16,3 +16,14 @@ class Search extends MovieSearchEvent {
     return 'Search { query: $query }';
   }
 }
+
+class SearchSuggestions extends MovieSearchEvent {
+  final String query;
+
+  SearchSuggestions({this.query}) : super([query]);
+
+  @override
+  String toString() {
+    return 'SearchSuggestions { query: $query }';
+  }
+}

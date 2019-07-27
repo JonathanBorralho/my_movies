@@ -6,24 +6,13 @@ abstract class MovieSearchEvent extends Equatable {
   MovieSearchEvent([List props = const []]) : super(props);
 }
 
-class Search extends MovieSearchEvent {
+class SearchButtonPressed extends MovieSearchEvent {
   final String query;
 
-  Search({this.query}) : super([query]);
+  SearchButtonPressed({this.query}) : super([query]);
 
   @override
   String toString() {
-    return 'Search { query: $query }';
-  }
-}
-
-class SearchSuggestions extends MovieSearchEvent {
-  final String query;
-
-  SearchSuggestions({this.query}) : super([query]);
-
-  @override
-  String toString() {
-    return 'SearchSuggestions { query: $query }';
+    return 'SearchButtonPressed { query: $query }';
   }
 }

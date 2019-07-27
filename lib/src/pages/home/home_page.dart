@@ -4,16 +4,21 @@ import 'package:my_movies/src/blocs/movie_search/bloc.dart';
 import 'package:my_movies/src/blocs/movies_list/bloc.dart';
 import 'package:my_movies/src/pages/home/movie_search_delegate.dart';
 import 'package:my_movies/src/pages/home/movies_list.dart';
-import 'package:my_movies/src/repositories/movie_repository.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final MovieRepository repository = RepositoryProvider.of<MovieRepository>(context);
-    final MovieSearchBloc searchBloc = MovieSearchBloc(movieRepository: repository);
+    final searchBloc = BlocProvider.of<MovieSearchBloc>(context);
+    final moviesListBloc = BlocProvider.of<MoviesListBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Melhores Filmes'),
+        title: Center(child: Text('Melhores Filmes')),
+        leading: IconButton(
+          icon: Icon(Icons.refresh),
+          onPressed: () {
+            moviesListBloc.dispatch(Fetch());
+          },
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -26,14 +31,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocProvider<MoviesListBloc>(
-        builder: (context) {
-          MovieRepository repository =
-              RepositoryProvider.of<MovieRepository>(context);
-          return MoviesListBloc(movieRepository: repository)..dispatch(Fetch());
-        },
-        child: MoviesList(),
-      ),
+      body: MoviesList(),
     );
   }
 }

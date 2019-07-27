@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movies/src/blocs/movie_search/bloc.dart';
 import 'package:my_movies/src/models/movie_model.dart';
 
+import 'movie_widgets.dart';
+
 class MovieSearchDelegate extends SearchDelegate {
   final MovieSearchBloc searchBloc;
 
@@ -68,21 +70,7 @@ class MovieSearchDelegate extends SearchDelegate {
 
   Widget _buildList(List<Movie> movies) {
     return movies.isNotEmpty
-        ? GridView.builder(
-            itemCount: movies.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Image.network(
-                  'https://image.tmdb.org/t/p/w154${movies[index].posterPath}',
-                  fit: BoxFit.cover,
-                ),
-              );
-            },
-          )
+        ? MovieCardList(movies)
         : Center(child: Text('Sem resultados...'));
   }
 }

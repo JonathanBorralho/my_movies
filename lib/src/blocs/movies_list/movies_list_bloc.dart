@@ -7,9 +7,7 @@ import './bloc.dart';
 class MoviesListBloc extends Bloc<MoviesListEvent, MoviesListState> {
   final MovieRepository movieRepository;
 
-  MoviesListBloc({
-    this.movieRepository,
-  }) : assert(movieRepository != null);
+  MoviesListBloc(this.movieRepository) : assert(movieRepository != null);
 
   @override
   MoviesListState get initialState => Initial();

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movies/src/blocs/movies_list/bloc.dart';
 import 'package:my_movies/src/models/movie_model.dart';
 
+import 'movie_widgets.dart';
+
 class MoviesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -26,20 +28,8 @@ class MoviesList extends StatelessWidget {
   }
 
   Widget _buildList(List<Movie> movies) {
-    return GridView.builder(
-      itemCount: movies.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      itemBuilder: (BuildContext context, int index) {
-        return Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Image.network(
-            'https://image.tmdb.org/t/p/w154${movies[index].posterPath}',
-            fit: BoxFit.cover,
-          ),
-        );
-      },
-    );
+    return movies.isNotEmpty
+        ? MovieCardList(movies)
+        : Center(child: Text('Sem resultados...'));
   }
 }

@@ -7,7 +7,7 @@ import './bloc.dart';
 class MovieSearchBloc extends Bloc<MovieSearchEvent, MovieSearchState> {
   final MovieRepository movieRepository;
 
-  MovieSearchBloc({this.movieRepository});
+  MovieSearchBloc(this.movieRepository) : assert(movieRepository != null);
 
   @override
   MovieSearchState get initialState => SearchStateEmpty();

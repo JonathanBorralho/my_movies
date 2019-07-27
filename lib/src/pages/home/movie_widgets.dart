@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_movies/src/models/movie_model.dart';
+import 'package:my_movies/src/pages/movie/movie_page.dart';
 
 class MovieCardList extends StatelessWidget {
   final List<Movie> movies;
@@ -14,7 +15,14 @@ class MovieCardList extends StatelessWidget {
         crossAxisCount: 2,
       ),
       itemBuilder: (BuildContext context, int index) {
-        return MovieCardItem(movies[index]);
+        return InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => MoviePage(movies[index])),
+            );
+          },
+          child: MovieCardItem(movies[index]),
+        );
       },
     );
   }
@@ -29,9 +37,12 @@ class MovieCardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: Image.network(
-        'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-        fit: BoxFit.cover,
+      child: Hero(
+        tag: movie.id,
+        child: Image.network(
+          'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

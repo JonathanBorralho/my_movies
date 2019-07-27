@@ -3,11 +3,14 @@ import 'dart:convert' as convert;
 
 import 'package:my_movies/src/models/movie_model.dart';
 import 'package:my_movies/src/models/movie_response_page.dart';
+import 'package:my_movies/src/services/search_cache_service.dart';
 
 class MovieRepository {
   final String _apiKey = '5ea66116adf9299cc57dc1eacc39f2c6';
   final String _baseUrl = 'api.themoviedb.org';
-  final _cache = Map<String, List<Movie>>();
+  final SearchCache cache;
+
+  MovieRepository(this.cache);
 
   Future<List<Movie>> findAll() async {
     final uri = Uri.https(
@@ -26,8 +29,8 @@ class MovieRepository {
   }
 
   Future<List<Movie>> search(String query) async {
-    if (_cache.containsKey(query)) {
-      return _cache[query];
+    if (cache.contains(query)) {
+      return cache.get(query);
     } else {
       final uri = Uri.https(_baseUrl, '/3/search/movie', {
         'api_key': _apiKey,
@@ -38,7 +41,7 @@ class MovieRepository {
       if (response.statusCode != 200) throw Exception();
       Map<String, dynamic> body = convert.jsonDecode(response.body);
       MovieResponsePage page = MovieResponsePage.fromJson(body);
-      _cache[query] = page.movies;
+      cache.set(query, page.movies);
       return page.movies;
     }
   }

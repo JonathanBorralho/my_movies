@@ -130,13 +130,27 @@ class Poster extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: SizedBox(
-        height: 300,
-        width: 250,
-        child: Hero(
-          tag: movie.id,
-          child: Image.network(
-              'https://image.tmdb.org/t/p/w500${movie.posterPath}'),
+      child: Hero(
+        tag: movie.id,
+        child: Container(
+          width: 200,
+          height: 300,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                offset: Offset(
+                  4.0,
+                  5.0,
+                ),
+                blurRadius: 6.0,
+              ),
+            ],
+            image: DecorationImage(
+              image: Image.network(
+                'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+              ).image,
+            ),
+          ),
         ),
       ),
     );
